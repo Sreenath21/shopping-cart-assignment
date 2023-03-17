@@ -8,6 +8,7 @@ const ProductDetails = ({ product }) => {
   const dispatch = useDispatch();
 
   const handleBuyNow = (prodId) => {
+    console.log(prodId);
     if (cartItems.find((_) => _.id === prodId)) {
       dispatch(increaseQuantity(prodId));
     } else {

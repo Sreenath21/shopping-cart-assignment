@@ -17,7 +17,7 @@ const Register = () => {
     statusErrorMessage: "",
     statusSuccessMessage: "",
   });
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onFormSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +45,7 @@ const Register = () => {
             setUserDetails(initialState);
 
             setTimeout(() => {
-              // navigate("/login");
+              navigate("/login");
             }, 2000);
           } else {
             showError("Invalid email id");

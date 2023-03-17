@@ -1,6 +1,7 @@
 $light-gray: #c8cbce61;
 
 .header {
+  padding-bottom: 4px;
   background: white;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
   height: 6rem;
@@ -73,7 +74,10 @@ $light-gray: #c8cbce61;
         a {
           display: flex;
           align-items: center;
-          background-color: $light-gray;
+
+          &:hover {
+            background-color: $light-gray;
+          }
 
           .cart-icon {
             padding: 0 1em;

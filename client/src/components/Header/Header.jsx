@@ -1,13 +1,26 @@
-import React from "react";
+import { useContext } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import AuthContext from "../../context/AuthContext";
 
 import "./Header.scss";
-import CartIcon from "../../static/images/cart.svg";
 
 const Header = () => {
+  const cartItemsCount = useSelector((state) => state.cart.itemsAdded.length);
+  const { userAuthentication, toggleUserAuthentication } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <nav className="navbar">
-        <div className="brand-name">
+        <div
+          className="brand-name"
+          onClick={() => {
+            navigate("/home");
+          }}
+        >
           <img
             className="brand-logo"
             src="../../static/images/logo.png"
@@ -20,38 +33,66 @@ const Header = () => {
         <div className="left-nav">
           <ul className="tabs">
             <li>
-              <a href="/">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="/products">Products</a>
+              <Link to="/products">Products</Link>
             </li>
           </ul>
         </div>
 
         <div className="right-nav">
-          {/* If logged in */}
-          {/* <ul className="links">
-            <li>
-              <a href="#">Logout</a>
-            </li>
-          </ul> */}
+          {userAuthentication === "logged-in" ? (
+            <ul className="links">
+              <li
+                onClick={() => {
+                  sessionStorage.setItem("status", "");
+                  toggleUserAuthentication();
+                }}
+              >
+                <Link to="#">Logout</Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className="links">
+              <li>
+                <Link to="/login">SignIn</Link>
+              </li>
+              <li>
+                <Link to="/sign-up">Register</Link>
+              </li>
+            </ul>
+          )}
 
-          {/* If not signed out */}
+          {/* 
+          // If logged in
           <ul className="links">
             <li>
-              <a href="/login">SignIn</a>
-            </li>
-            <li>
-              <a href="/sign-up">Register</a>
+              <Link to="#">Logout</Link>
             </li>
           </ul>
+          //  If not signed out 
+          <ul className="links">
+            <li>
+              <Link to="/login">SignIn</Link>
+            </li>
+            <li>
+              <Link to="/sign-up">Register</Link>
+            </li>
+          </ul>
+          */}
 
           <div className="my-cart">
-            <a href="/cart">
+            <Link to="/cart">
               <img src="../../static/images/cart.svg" alt="" />
-              {/* <CartIcon /> */}
-              <span>1</span>
-            </a>
+              <span
+                style={
+                  cartItemsCount > 0 ? { color: "#ea1d71" } : { color: "gray" }
+                }
+              >
+                {cartItemsCount}
+              </span>
+            </Link>
           </div>
         </div>
       </nav>

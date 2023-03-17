@@ -1,34 +1,54 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Outlet,
+  redirect,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 
 import Header from "./components/Header/Header";
-import Carousel from "./components/Carousel/Carousel";
 import SignIn from "./containers/Auth/SignIn";
 import Register from "./containers/Auth/Register";
+import Cart from "./containers/Cart/Cart";
 import Home from "./containers/Home/Home";
 import Products from "./containers/Products/Products";
 import Footer from "./components/Footer/Footer";
 
-import { fetchBanners } from "./features/banner/bannerSlice";
-import { fetchCategories } from "./features/categories/categoriesSlice";
-import { fetchProducts } from "./features/products/productsSlice";
-
 import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  const banner = useSelector((state) => state.banner);
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fetchBanners());
-  // }, []);
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<Root />}>
+        <Route index loader={() => redirect("/home")} />
+        <Route path="login" element={<SignIn />} />
+        <Route path="/sign-up" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/cart" element={<Cart />} />
+      </Route>
+    )
+  );
 
   return (
     <div className="App">
-      <Header />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </div>
   );
 }
+
+const Root = () => {
+  return (
+    <div className="parent-container">
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
+  );
+};
 
 export default App;

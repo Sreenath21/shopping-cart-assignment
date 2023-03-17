@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import AuthContext from "../../context/AuthContext";
 
 import "./Auth.scss";
 
 const SignIn = () => {
   const [userDetails, setUserDetails] = useState({ email: "", password: "" });
   const [validation, setValidation] = useState("");
+  const { toggleUserAuthentication } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onFormSubmit = (event) => {
     event.preventDefault();
+    const email = sessionStorage.getItem("email");
+    const pwd = sessionStorage.getItem("password");
+
+    console.log(userDetails.email, userDetails.password);
+
+    if (userDetails.email === email && userDetails.password === pwd) {
+      toggleUserAuthentication();
+      sessionStorage.setItem("status", "logged-in");
+      navigate("/");
+    } else {
+      setValidation("Invalid credentials");
+    }
   };
 
   return (
